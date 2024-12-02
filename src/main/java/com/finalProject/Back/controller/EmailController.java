@@ -2,8 +2,6 @@ package com.finalProject.Back.controller;
 
 import com.finalProject.Back.dto.request.email.ReqEmail;
 import com.finalProject.Back.dto.request.email.ReqSendEmailDto;
-import com.finalProject.Back.dto.response.email.RespEmailCheckDto;
-import com.finalProject.Back.exception.EmailAlreadyExistsException;
 import com.finalProject.Back.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
@@ -11,17 +9,13 @@ import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.web.bind.annotation.*;
 
 import javax.mail.internet.MimeMessage;
-import java.io.File;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -41,8 +35,6 @@ public class EmailController {
     public ResponseEntity<String> sendVerificationCode(@RequestBody ReqEmail emailRequest) {
         String email = emailRequest.getEmail();
         String verificationCode = generateVerificationCode();
-        System.out.println(emailRequest);
-        System.out.println(verificationCode);
         // 이메일 전송 로직
         try {
             sendEmail(email, verificationCode);
@@ -54,9 +46,6 @@ public class EmailController {
 
     @PostMapping("/mail/find/send/{email}")
         public ResponseEntity<String> sendEmailCode(@PathVariable String email, @RequestBody ReqSendEmailDto reqSendEmailDto) {
-        System.out.println("이메일아디" + email);
-        System.out.println("이메일" + reqSendEmailDto.getUsername());
-        System.out.println("이메일" + reqSendEmailDto.getValue());
         if(reqSendEmailDto.getValue().equals("FindUser")|| reqSendEmailDto.getValue().equals("FindPassword")){
             try{
                 sendUsername(email, reqSendEmailDto.getUsername());

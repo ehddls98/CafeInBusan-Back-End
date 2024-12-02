@@ -1,14 +1,85 @@
 spring:
+  profiles:
+    active: local
+    group:
+      local: local, common, secret
+      blue: blue, common, secret
+      green: green, common, secret
+
+server:
+  env: blue
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: local
+  security:
+    oauth2:
+      client:
+        registration:
+          kakao:
+            redirectUri: http://localhost:8080/login/oauth2/code/kakao
+          naver:
+            redirectUri: http://localhost:8080/login/oauth2/code/naver
+
+server:
+  port: 8080
+  address: localhost
+
+serverName: local_server
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: blue
+  security:
+    oauth2:
+      client:
+        registration:
+          kakao:
+            redirectUri: http://13.209.243.191/login/oauth2/code/kakao
+          naver:
+            redirectUri: http://13.209.243.191/login/oauth2/code/naver
+
+server:
+  port: 8080
+  address: 13.209.243.191
+
+serverName: blue_server
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: green
+  security:
+    oauth2:
+      client:
+        registration:
+          kakao:
+            redirectUri: http://13.209.243.191/login/oauth2/code/kakao
+          naver:
+            redirectUri: http://13.209.243.191/login/oauth2/code/naver
+
+server:
+  port: 8081
+  address: 13.209.243.191
+
+serverName: green_server
+
+---
+
+spring:
   config:
     import: application-secret.yml
-
   mvc:
     path match:
       matching-strategy: ant_path_matcher
-
 mybatis:
   mapper-locations:
     - /mappers/*.xml
-
-jwt:
-  secret: c733ccc7c005dec3033bf9201ecb9cf51d24b5306e9d4bc5c48a165a6c16f0209fb83133986baed981c5fd4db63c6c12540619c64e10510d0c471cc34161cf604c6ef7b685703e7ebd0d2acc3efb069a22b9285e56c680d96d977f0ef792584443a15f6ccb447b4b522309a716db9383d69855ac698dae6a7a4606ab58db65f992909bd6fac2d00916fd868af3c75b8a9f9cb3f9bfcced78e82a6299eb8b4865c782cc518b9a758e6f81eff8825637ab2a5b6e62efb784068e598edcffe5353cb995cdc77b1ca3517ecaf033eb925eec683aaa158a6f62c4067389123836ca0483bdd169a3d60a5bbd25ae2e3bbf1cd9b6568b94e4ba762bdc3fd959984a1a70
