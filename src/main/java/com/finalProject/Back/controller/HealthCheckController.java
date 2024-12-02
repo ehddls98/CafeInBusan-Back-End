@@ -33,6 +33,7 @@ public class HealthCheckController {
 
     @GetMapping("/env")
     public ResponseEntity<?> getEnv() {
+        System.out.println(env);
         return ResponseEntity.ok(env);
     }
 }
